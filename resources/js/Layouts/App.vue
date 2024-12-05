@@ -1,63 +1,53 @@
 <template>
-	<v-card>
-		<v-layout>
-			<v-app-bar color="primary" prominent>
-				<v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+	<v-responsive class="border rounded">
+		<v-app :theme="theme" full-height>
 
-					<v-toolbar-title>COCO</v-toolbar-title>
-
-					<v-spacer></v-spacer>
-
-					<template v-if="$vuetify.display.mdAndUp">
-						<v-btn icon="mdi-magnify" variant="text"></v-btn>
-						<v-btn icon="mdi-filter" variant="text"></v-btn>
-					</template>
-
-					<v-btn icon="mdi-dots-vertical" variant="text"></v-btn>
+			<v-app-bar color="pink" flat>
+				<template v-slot:prepend>
+					<v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+				</template>
+				<template v-slot:title>
+					<h1><strong>COCO</strong> <small>Compras Comunitarias</small></h1>
+				</template>
+				<template v-slot:append>
+					<v-btn slim @click="toggleTheme">
+						 <v-icon :icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'" />
+					</v-btn>
+				</template>
 			</v-app-bar>
 
-			<v-navigation-drawer v-model="drawer" :location="$vuetify.display.mobile ? 'bottom' : undefined" temporary>
-				<v-list :items="items"></v-list>
+			<v-navigation-drawer v-model="drawer" temporary>
+				<v-list>
+					<Link href="/providers">
+						<v-list-item prepend-icon="mdi-store" title="Proveedores" link />
+					</Link>
+					<Link href="/compras">
+						<v-list-item prepend-icon="mdi-basket" title="Compras" link />
+					</Link>
+					<Link href="/profile">
+						<v-list-item prepend-icon="mdi-account" title="Mi Cuenta" link />
+					</Link>
+				</v-list>
 			</v-navigation-drawer>
 
-			<v-main style="height: 500px;">
-				<v-card-text>
-					The navigation drawer will appear from the bottom on smaller size screens.
-				</v-card-text>
+			<v-main class="d-flex h-100">
+				<v-container>
+					<slot name="section"></slot>
+					<slot></slot>
+				</v-container>
 			</v-main>
-		</v-layout>
-	</v-card>
+		</v-app>
+	</v-responsive>
 </template>
 
-<script>
-export default {
-	data: () => ({
-		drawer: false,
-		group: null,
-		items: [
-			{
-				title: 'Foo',
-				value: 'foo',
-			},
-			{
-				title: 'Bar',
-				value: 'bar',
-			},
-			{
-				title: 'Fizz',
-				value: 'fizz',
-			},
-			{
-				title: 'Buzz',
-				value: 'buzz',
-			},
-		],
-	}),
+<script setup>
+import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue'
 
-	watch: {
-		group() {
-			this.drawer = false
-		},
-	},
+const theme = ref('light')
+const drawer = ref(false)
+
+function toggleTheme() {
+	theme.value = theme.value === 'light' ? 'dark' : 'light'
 }
 </script>

@@ -15,7 +15,9 @@ class PurchaseController extends Controller
      */
     public function index(Request $request)
     {
-        return Inertia::render('coco/PurchaseReport');
+        $purchases = Purchase::with(['user','provider'])->get();
+        
+        return Inertia::render('Purchases', ['purchases' => $purchases]);
     }
 
     /**

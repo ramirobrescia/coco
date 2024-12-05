@@ -110,9 +110,9 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+// import { useRouter } from 'vue-router'
 
-const router = useRouter()
+// const router = useRouter()
 
 // Estado del formulario
 const isFormValid = ref(false)
@@ -170,7 +170,7 @@ const handleSubmit = async () => {
     snackbar.show = true
 
     // Redirigir a la página de la compra (asumiendo que la API devuelve el ID)
-    router.push('/purchase/1/order')
+    // router.push('/purchase/1/order')
   } catch (error) {
     // Manejar error
     snackbar.color = 'error'
@@ -182,7 +182,7 @@ const handleSubmit = async () => {
 }
 
 const handleCancel = () => {
-  router.push('/purchases')
+  // router.push('/purchases')
 }
 </script>
 

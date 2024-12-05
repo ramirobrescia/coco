@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Provider;
 use App\Http\Requests\StoreProviderRequest;
 use App\Http\Requests\UpdateProviderRequest;
+use Inertia\Inertia;
 
 class ProviderController extends Controller
 {
@@ -13,7 +14,9 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        //
+        $providers = Provider::all();
+
+        return Inertia::render('Providers', ['providers' => $providers]);
     }
 
     /**

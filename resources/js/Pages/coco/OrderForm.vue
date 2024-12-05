@@ -209,9 +209,9 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import { useRouter } from 'vue-router'
+// import { useRouter } from 'vue-router'
 
-const router = useRouter()
+// const router = useRouter()
 
 // Estados
 const selectedProduct = ref(null)
@@ -347,7 +347,7 @@ const handleSaveOrder = async () => {
     snackbar.show = true
 
     // Redirigir al resumen de la compra
-    router.push('/purchase/1')
+    // router.push('/purchase/1')
   } catch (error) {
     snackbar.color = 'error'
     snackbar.message = 'Error al guardar el pedido'
@@ -358,6 +358,6 @@ const handleSaveOrder = async () => {
 }
 
 const handleCancel = () => {
-  router.push('/purchase/1')
+  // router.push('/purchase/1')
 }
 </script>

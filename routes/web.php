@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,11 @@ Route::middleware('auth')->group(function () {
 });
 
 // Purchase
-Route::view('/compras/dashboard', Inertia::render('coco/Dashboard'));
-Route::resource('compras', PurchaseController::class);
+Route::get('/compras/dashboard', function () {
+    // return Inertia::render('CocoDashboard');
+    return Inertia::render('coco/Dashboard');
+});
+Route::resource('/providers', ProviderController::class);
+Route::resource('/compras', PurchaseController::class);
 
 require __DIR__.'/auth.php';

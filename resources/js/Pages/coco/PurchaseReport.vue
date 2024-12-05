@@ -1,119 +1,122 @@
 <template>
-  <v-container>
-    <v-card class="mx-auto pa-4" max-width="1200">
-      <v-card-title class="text-h5 mb-4 d-flex justify-space-between align-center">
-        Reporte de Pedidos
-        <v-btn
-          color="primary"
-          prepend-icon="mdi-download"
-          @click="exportReport"
-          :loading="isExporting"
+  <App>
+    <v-container>
+      <v-card class="mx-auto pa-4" max-width="1200">
+        <v-card-title class="text-h5 mb-4 d-flex justify-space-between align-center">
+          Reporte de Pedidos
+          <v-btn
+            color="primary"
+            prepend-icon="mdi-download"
+            @click="exportReport"
+            :loading="isExporting"
+          >
+            Exportar
+          </v-btn>
+        </v-card-title>
+
+        <!-- Filtros -->
+        <v-row class="mb-4">
+          <v-col cols="12" sm="4">
+            <v-text-field
+              v-model="search"
+              label="Buscar consumidor"
+              variant="outlined"
+              density="compact"
+              prepend-inner-icon="mdi-magnify"
+              clearable
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" sm="4">
+            <v-select
+              v-model="productFilter"
+              :items="productsList"
+              label="Filtrar por producto"
+              variant="outlined"
+              density="compact"
+              clearable
+            ></v-select>
+          </v-col>
+          <v-col cols="12" sm="4">
+            <v-select
+              v-model="orderBy"
+              :items="sortOptions"
+              label="Ordenar por"
+              variant="outlined"
+              density="compact"
+            ></v-select>
+          </v-col>
+        </v-row>
+
+        <!-- Tabla de Pedidos -->
+        <v-table fixed-header height="500px">
+          <thead>
+            <tr>
+              <th class="text-left">Consumidor</th>
+              <th class="text-left">Producto</th>
+              <th class="text-right">Cantidad</th>
+              <th class="text-right">Peso Unit.</th>
+              <th class="text-right">Peso Total</th>
+              <th class="text-right">Precio Unit.</th>
+              <th class="text-right">Subtotal</th>
+              <th class="text-center">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="order in filteredOrders" :key="order.id">
+              <td>{{ order.consumer }}</td>
+              <td>{{ order.product }}</td>
+              <td class="text-right">{{ order.quantity }}</td>
+              <td class="text-right">{{ order.unitWeight }} Kg</td>
+              <td class="text-right">{{ (order.quantity * order.unitWeight).toFixed(2) }} Kg</td>
+              <td class="text-right">${{ order.unitPrice }}</td>
+              <td class="text-right">${{ (order.quantity * order.unitPrice).toFixed(2) }}</td>
+              <td class="text-center">
+                <v-chip
+                  :color="getStatusColor(order.status)"
+                  size="small"
+                >
+                  {{ order.status }}
+                </v-chip>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot v-if="filteredOrders.length">
+            <tr>
+              <td colspan="2" class="text-right"><strong>Totales:</strong></td>
+              <td class="text-right"><strong>{{ totalQuantity }}</strong></td>
+              <td></td>
+              <td class="text-right"><strong>{{ totalWeight.toFixed(2) }} Kg</strong></td>
+              <td></td>
+              <td class="text-right"><strong>${{ totalAmount.toFixed(2) }}</strong></td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </v-table>
+
+        <!-- Mensaje cuando no hay resultados -->
+        <v-alert
+          v-if="!filteredOrders.length"
+          type="info"
+          class="mt-4"
         >
-          Exportar
-        </v-btn>
-      </v-card-title>
+          No se encontraron pedidos que coincidan con los filtros aplicados
+        </v-alert>
 
-      <!-- Filtros -->
-      <v-row class="mb-4">
-        <v-col cols="12" sm="4">
-          <v-text-field
-            v-model="search"
-            label="Buscar consumidor"
-            variant="outlined"
-            density="compact"
-            prepend-inner-icon="mdi-magnify"
-            clearable
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" sm="4">
-          <v-select
-            v-model="productFilter"
-            :items="productsList"
-            label="Filtrar por producto"
-            variant="outlined"
-            density="compact"
-            clearable
-          ></v-select>
-        </v-col>
-        <v-col cols="12" sm="4">
-          <v-select
-            v-model="orderBy"
-            :items="sortOptions"
-            label="Ordenar por"
-            variant="outlined"
-            density="compact"
-          ></v-select>
-        </v-col>
-      </v-row>
-
-      <!-- Tabla de Pedidos -->
-      <v-table fixed-header height="500px">
-        <thead>
-          <tr>
-            <th class="text-left">Consumidor</th>
-            <th class="text-left">Producto</th>
-            <th class="text-right">Cantidad</th>
-            <th class="text-right">Peso Unit.</th>
-            <th class="text-right">Peso Total</th>
-            <th class="text-right">Precio Unit.</th>
-            <th class="text-right">Subtotal</th>
-            <th class="text-center">Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="order in filteredOrders" :key="order.id">
-            <td>{{ order.consumer }}</td>
-            <td>{{ order.product }}</td>
-            <td class="text-right">{{ order.quantity }}</td>
-            <td class="text-right">{{ order.unitWeight }} Kg</td>
-            <td class="text-right">{{ (order.quantity * order.unitWeight).toFixed(2) }} Kg</td>
-            <td class="text-right">${{ order.unitPrice }}</td>
-            <td class="text-right">${{ (order.quantity * order.unitPrice).toFixed(2) }}</td>
-            <td class="text-center">
-              <v-chip
-                :color="getStatusColor(order.status)"
-                size="small"
-              >
-                {{ order.status }}
-              </v-chip>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot v-if="filteredOrders.length">
-          <tr>
-            <td colspan="2" class="text-right"><strong>Totales:</strong></td>
-            <td class="text-right"><strong>{{ totalQuantity }}</strong></td>
-            <td></td>
-            <td class="text-right"><strong>{{ totalWeight.toFixed(2) }} Kg</strong></td>
-            <td></td>
-            <td class="text-right"><strong>${{ totalAmount.toFixed(2) }}</strong></td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </v-table>
-
-      <!-- Mensaje cuando no hay resultados -->
-      <v-alert
-        v-if="!filteredOrders.length"
-        type="info"
-        class="mt-4"
-      >
-        No se encontraron pedidos que coincidan con los filtros aplicados
-      </v-alert>
-
-      <!-- Snackbar -->
-      <v-snackbar
-        v-model="snackbar.show"
-        :color="snackbar.color"
-        :timeout="3000"
-      >
-        {{ snackbar.message }}
-      </v-snackbar>
-    </v-card>
-  </v-container>
+        <!-- Snackbar -->
+        <v-snackbar
+          v-model="snackbar.show"
+          :color="snackbar.color"
+          :timeout="3000"
+        >
+          {{ snackbar.message }}
+        </v-snackbar>
+      </v-card>
+    </v-container>
+  </App>
 </template>
 
 <script setup>
+import App from '@/Layouts/App.vue';
 import { ref, computed, reactive } from 'vue'
 
 // Estados
