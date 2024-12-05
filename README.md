@@ -13,6 +13,10 @@ Una compra comunitaria es cuando dos o más consumidores unen su poder de compra
 - Acceder a mejores precios por volumen
 - Compra a granel
 
+### Stack
+
+Laravel (Breeze) + Inertia.js / Vue
+
 # Instalación
 
 ## Desarrollo
