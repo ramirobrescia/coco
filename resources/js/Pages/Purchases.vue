@@ -1,7 +1,9 @@
 <template>
 	<App>
 		<template v-slot:section>
-			<v-card title="Compras" flat></v-card>
+			<SectionHeader title="Compras">
+				<v-btn class="text-none" color="success" slim text="Crear" variant="flat" />
+			</SectionHeader>
 		</template>
 
 		<v-row>
@@ -11,9 +13,6 @@
 					variant="solo" density="compact"
 					hide-details single-line ></v-text-field>
 			</v-col>
-			<v-col cols="3">
-				<v-btn variant="tonal">Crear</v-btn>
-			</v-col>
 		</v-row>
 
 		<v-data-table :items="purchases" :headers="headers" :search="search"></v-data-table>
@@ -21,6 +20,7 @@
 </template>
 
 <script setup>
+import SectionHeader from '@/Components/SectionHeader.vue';
 import App from '@/Layouts/App.vue';
 import { ref } from 'vue';
 

@@ -40,7 +40,6 @@ const submit = () => {
 
 		<form @submit.prevent="submit">
 			<div>
-				<v-text-field label="Label"></v-text-field>
 				<InputLabel for="email" value="Email" />
 
 				<TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus
