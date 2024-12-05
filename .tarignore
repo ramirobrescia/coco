@@ -1,0 +1,7 @@
+.git
+.vscode
+.editorconfig
+.gitignore
+.gitattributes
+.tarignore
+*.tar.gz
