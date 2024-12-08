@@ -1,16 +1,6 @@
-<template>
-	<App>
-		<template v-slot:section>
-			<SectionHeader title="Proveedores">
-				<v-btn class="text-none" color="success" rounded="lg" slim text="Nuevo" variant="flat" />
-			</SectionHeader>
-		</template>
-
-		<v-data-table :items="providers" :headers="headers"></v-data-table>
-	</App>
-</template>
-
 <script setup>
+import { router } from '@inertiajs/vue3';
+import CreateProviderDialog from '@/Components/CreateProviderDialog.vue';
 import SectionHeader from '@/Components/SectionHeader.vue';
 import App from '@/Layouts/App.vue';
 
@@ -22,4 +12,21 @@ const headers = [
 	{ title: 'Contacto', key: 'contact' },
 ]
 
+function providerCreated(){
+	router.visit('/proveedores', {
+		only: ['providers']
+	})
+}
+
 </script>
+<template>
+	<App>
+		<template v-slot:section>
+			<SectionHeader title="Proveedores">
+				<CreateProviderDialog @created="providerCreated" />
+			</SectionHeader>
+		</template>
+
+		<v-data-table :items="providers" :headers="headers"></v-data-table>
+	</App>
+</template>

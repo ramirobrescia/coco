@@ -14,7 +14,7 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        $providers = Provider::all();
+        $providers = Provider::orderBy('name')->get();
 
         return Inertia::render('Providers', ['providers' => $providers]);
     }
@@ -32,7 +32,12 @@ class ProviderController extends Controller
      */
     public function store(StoreProviderRequest $request)
     {
-        //
+        Provider::create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'contact' => $request->contact,
+        ]);
     }
 
     /**
