@@ -19,7 +19,7 @@ const form = useForm({
 })
 
 function cancelar(){
-	form.reset()
+	form.reset().clearErrors()
 	dialog.value = false
 }
 
@@ -29,7 +29,7 @@ function guardar(){
 			snackbar.message = 'El proveedor fue creado con éxito'
 			snackbar.color = 'success'
 			snackbar.active = true
-			form.reset()
+			form.reset().clearErrors()
 			dialog.value = false
 		}
 	})
@@ -59,12 +59,12 @@ function guardar(){
 									:error-messages="form.errors.contact" />
 							</div>
 
-						</form>
+						</v-form>
 					</v-card-text>
 
 					<v-card-actions class="justify-space-between mx-2 mb-2">
 						<v-btn text="Cancelar" color="red" variant="outlined" @click="cancelar" />
-						<v-btn text="Guardar" color="success" variant="flat" @click="guardar" />
+						<v-btn text="Guardar" color="success" variant="flat" @click="guardar" :loading="form.processing" />
 					</v-card-actions>
 				</v-card>
 			</template>
