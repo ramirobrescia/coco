@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProviderRequest extends FormRequest
 {
@@ -25,7 +26,8 @@ class StoreProviderRequest extends FormRequest
         return [
             'name' => 'required',
             'phone' => 'required',
-            'email' => 'required|email'
+            'email' => ['required', 'unique:App\Models\Provider,email'],
+            'contact' => 'required'
         ];
     }
 
@@ -35,7 +37,9 @@ class StoreProviderRequest extends FormRequest
             'name.required' => 'El nombre es obligatorio',
             'phone.required' => 'El teléfono es obligatorio',
             'email.required' => 'El email es obligatorio',
-            'email.email' => 'El email no es válido ',
+            'email.email' => 'El email no es válido',
+            'email.unique' => 'Ya existe un proveedor con este email',
+            'contact.required' => 'El nombre del contacto es obligatorio'
         ];
     }
 }

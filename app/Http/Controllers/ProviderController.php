@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Provider;
 use App\Http\Requests\StoreProviderRequest;
 use App\Http\Requests\UpdateProviderRequest;
+use App\Models\User;
 use Inertia\Inertia;
 
 class ProviderController extends Controller
@@ -32,12 +33,10 @@ class ProviderController extends Controller
      */
     public function store(StoreProviderRequest $request)
     {
-        Provider::create([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'contact' => $request->contact,
-        ]);
+        $provider = $request->validated();
+     
+        Provider::create($provider);
+
     }
 
     /**

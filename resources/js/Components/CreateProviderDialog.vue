@@ -31,11 +31,6 @@ function guardar(){
 			snackbar.active = true
 			form.reset()
 			dialog.value = false
-		},
-		onError: function (errors) {
-			snackbar.message = 'Los datos enviados no son válidos'
-			snackbar.color = 'red'
-			snackbar.active = true
 		}
 	})
 }
@@ -48,6 +43,7 @@ function guardar(){
 			<template v-slot:default="{ isActive }">
 				<v-card title="Nuevo proveedor">
 					<v-card-text>
+						
 						<form id="createProvider" @submit.prevent="guardar">
 
 							<div class="ga-3">
@@ -74,7 +70,7 @@ function guardar(){
 			</template>
 		</v-dialog>
 	</v-btn>
-	<v-snackbar v-model="snackbar.active" 
+	<v-snackbar v-model="snackbar.active" id="create-provider-snackbar"
 		:color="snackbar.color"
 		:timeout="snackbar.timeout"
 		location="top center"
