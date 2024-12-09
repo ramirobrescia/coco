@@ -26,7 +26,7 @@ class StoreProviderRequest extends FormRequest
         return [
             'name' => 'required',
             'phone' => 'required',
-            'email' => ['required', 'unique:App\Models\Provider,email'],
+            'email' => ['required', 'email', 'unique:App\Models\Provider,email'],
             'contact' => 'required'
         ];
     }
