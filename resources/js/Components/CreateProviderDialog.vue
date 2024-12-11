@@ -59,7 +59,7 @@ function guardar(){
 									:error-messages="form.errors.contact" />
 							</div>
 
-						</v-form>
+						</form>
 					</v-card-text>
 
 					<v-card-actions class="justify-space-between mx-2 mb-2">
