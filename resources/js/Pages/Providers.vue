@@ -3,8 +3,18 @@ import { router } from '@inertiajs/vue3';
 import CreateProviderDialog from '@/Components/CreateProviderDialog.vue';
 import SectionHeader from '@/Components/SectionHeader.vue';
 import App from '@/Layouts/App.vue';
+import { reactive, ref } from 'vue';
 
-const props = defineProps(['providers'])
+const props = defineProps({
+	providers: {
+    type: Object,
+    default() {
+      return { }
+    }
+  }
+})
+const loading = ref(false)
+
 const headers = [
 	{ title: 'Nombre', key: 'name' },
 	{ title: 'Teléfono', key: 'phone' },
@@ -18,6 +28,22 @@ function providerCreated(){
 	})
 }
 
+function loadItems(options){
+	console.log(options)
+	
+	router.reload({
+		replace: false,
+		data: {
+			page: options.page,
+			perPage: options.itemsPerPage,
+			sortBy: options.sortBy[0]
+		},
+		only: ['providers'],
+		onStart: () => loading.value = true,
+		onFinish: () => loading.value = false,
+	})
+}
+
 </script>
 <template>
 	<App>
@@ -27,6 +53,14 @@ function providerCreated(){
 			</SectionHeader>
 		</template>
 
-		<v-data-table :items="providers" :headers="headers"></v-data-table>
+		<v-data-table-server
+			:headers="headers"
+			:items="providers.data"
+			:items-length="providers.total"
+			:items-per-page="providers.per_page"
+			:loading="loading"
+			item-value="name"
+			@update:options="loadItems">
+		</v-data-table-server>
 	</App>
 </template>

@@ -15,9 +15,17 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        $providers = Provider::orderBy('name')->get();
+        
+        return Inertia::render('Providers', [
+            'providers' => Inertia::lazy(function () {
+                $perPage = request()->integer('perPage', 10);
+                $sortBy = request()->input('sortBy', ['key' => 'name', 'order' => 'asc']);
 
-        return Inertia::render('Providers', ['providers' => $providers]);
+                return Provider::orderBy($sortBy['key'], $sortBy['order'])
+                    ->paginate($perPage)
+                    ->withQueryString();
+            })
+        ]);
     }
 
     /**
