@@ -25,6 +25,9 @@ function cancelar(){
 
 function guardar(){
 	form.post('/proveedores', {
+		replace: false,
+		preserveState: true,
+		only: ['providers'],
 		onSuccess: function () {
 			snackbar.message = 'El proveedor fue creado con éxito'
 			snackbar.color = 'success'
