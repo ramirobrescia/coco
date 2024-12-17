@@ -21,6 +21,8 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@vee-validate/yup": "^4.14.7",
+        "vee-validate": "^4.14.7",
         "vuetify": "^3.7.4"
     }
 }

@@ -34,12 +34,9 @@ class StoreProviderRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'El nombre es obligatorio',
-            'phone.required' => 'El teléfono es obligatorio',
-            'email.required' => 'El email es obligatorio',
-            'email.email' => 'El email no es válido',
+            'required' => 'Este campo es obligatorio',
+            'email' => 'El e-mail no es válido s',
             'email.unique' => 'Ya existe un proveedor con este email',
-            'contact.required' => 'El nombre del contacto es obligatorio'
         ];
     }
 }

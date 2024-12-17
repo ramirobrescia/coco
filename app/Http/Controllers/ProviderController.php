@@ -16,7 +16,7 @@ class ProviderController extends Controller
     public function index()
     {
         
-        return Inertia::render('Providers', [
+        return Inertia::render('Providers/Index', [
             'providers' => Inertia::lazy(function () {
                 $perPage = request()->integer('perPage', 10);
                 $sortBy = request()->input('sortBy', ['key' => 'name', 'order' => 'asc']);
@@ -33,7 +33,7 @@ class ProviderController extends Controller
      */
     public function create()
     {
-        //
+       return Inertia::render('Providers/Create'); 
     }
 
     /**
@@ -45,6 +45,7 @@ class ProviderController extends Controller
      
         Provider::create($provider);
 
+        return to_route('proveedores.index');
     }
 
     /**

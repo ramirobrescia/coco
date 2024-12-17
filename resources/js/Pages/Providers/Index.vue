@@ -1,19 +1,24 @@
 <script setup>
-import { router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import CreateProviderDialog from '@/Components/CreateProviderDialog.vue';
 import SectionHeader from '@/Components/SectionHeader.vue';
 import App from '@/Layouts/App.vue';
 import { reactive, ref } from 'vue';
 
+const loading = ref(true)
+
 const props = defineProps({
 	providers: {
     type: Object,
     default() {
-      return { }
+      return {
+				data: [],
+				total: 0,
+				per_page: 10
+			}
     }
   }
 })
-const loading = ref(false)
 
 const headers = [
 	{ title: 'Nombre', key: 'name' },
@@ -29,8 +34,6 @@ function providerCreated(){
 }
 
 function loadItems(options){
-	console.log(options)
-	
 	router.reload({
 		replace: false,
 		data: {
@@ -49,16 +52,18 @@ function loadItems(options){
 	<App>
 		<template v-slot:section>
 			<SectionHeader title="Proveedores">
-				<CreateProviderDialog @created="providerCreated" />
+				<Link href="/proveedores/create">
+					<v-btn class="text-none" color="success" rounded="lg" slim variant="flat">Nuevo</v-btn>
+				</Link>
 			</SectionHeader>
 		</template>
 
 		<v-data-table-server
+			:loading="loading"
 			:headers="headers"
 			:items="providers.data"
 			:items-length="providers.total"
 			:items-per-page="providers.per_page"
-			:loading="loading"
 			item-value="name"
 			@update:options="loadItems">
 		</v-data-table-server>

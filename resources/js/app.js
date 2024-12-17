@@ -13,6 +13,7 @@ import { createVuetify } from 'vuetify'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { setLocale as yupSetLocale } from 'yup';
 
 const vuetify = createVuetify({
     components,
@@ -25,6 +26,20 @@ const vuetify = createVuetify({
         },
     },
 })
+
+// yup localization
+yupSetLocale({
+    string: {
+        email: 'El e-mail no es válido',
+        min: 'Debe tener al menos ${min} carateres'
+    },
+    number: {
+        min: 'Debe ser mayor a ${min}',
+    },
+    mixed: {
+        required: 'Este campo es obligatorio',
+    }
+});
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
