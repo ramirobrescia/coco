@@ -1,9 +1,8 @@
 <script setup>
 import App from '@/Layouts/App.vue';
 import { Link, router } from '@inertiajs/vue3';
-import { useField } from 'vee-validate';
-import * as yup from 'yup';
 import { reactive, ref } from 'vue';
+import * as yup from 'yup';
 import { useForm } from 'vee-validate';
 
 defineEmits([ 'created' ])
@@ -13,7 +12,7 @@ const snackbar = reactive({
 	timeout: 5000
 });
 
-const { errors, defineField, setFieldError, handleSubmit, isSubmitting }  = useForm({
+const { errors, defineField, setFieldError, handleSubmit }  = useForm({
 	validationSchema: yup.object({
 		name: yup.string().required(),
 		phone: yup.string().required(),
@@ -22,20 +21,21 @@ const { errors, defineField, setFieldError, handleSubmit, isSubmitting }  = useF
 	})
 })
 
+const processing = ref(false)
 const [name, nameAttrs] = defineField('name')
 const [phone, phoneAttrs] = defineField('phone')
 const [email, emailAttrs] = defineField('email')
 const [contact, contactAttrs] = defineField('contact')
 
 function cancelar(){
-	router.get('/proveedores', { replace: true })
+	router.get('/providers', { replace: true })
 }
 
 // use `onSubmit` as an event handler for your forms
 const guardar = handleSubmit(values => {
-	router.post('/proveedores', values, {
-		// onBefore: () => formData.processing = true,
-		// onFinish: () => formData.processing = false,
+	router.post('/providers', values, {
+		onBefore: () => processing = true,
+		onFinish: () => processing = false,
 		onError: (serverErrors) => {
 			for (const [field, error] of Object.entries(serverErrors)) {
 				setFieldError(field, error)
@@ -73,10 +73,10 @@ function guardar2(){
 			</v-card-text>
 
 			<v-card-actions class="justify-space-between mx-2 mb-2">
-				<Link href="/proveedores">
+				<Link href="/providers">
 					<v-btn text="Cancelar" color="red" variant="outlined" @click="cancelar" />
 				</Link>
-				<v-btn text="Guardar" color="success" variant="flat" @click="guardar" :loading="isSubmitting" />
+				<v-btn text="Guardar" color="success" variant="flat" @click="guardar" :loading="processing" />
 			</v-card-actions>
 		</v-card>
 			
