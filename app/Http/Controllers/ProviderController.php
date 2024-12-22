@@ -6,10 +6,12 @@ use App\Models\Provider;
 use App\Http\Requests\StoreProviderRequest;
 use App\Http\Requests\UpdateProviderRequest;
 use App\Models\User;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class ProviderController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -61,7 +63,7 @@ class ProviderController extends Controller
      */
     public function edit(Provider $provider)
     {
-        //
+        return Inertia::render('Providers/Edit', ['provider' => $provider]);
     }
 
     /**
@@ -69,7 +71,20 @@ class ProviderController extends Controller
      */
     public function update(UpdateProviderRequest $request, Provider $provider)
     {
-        //
+        $newData = $request->validated();
+
+        $exist = Provider::where('email', $newData['email'])
+                ->where('id', '!=', $provider->id)
+                ->count() > 0;
+        
+        if ($exist){
+            $errors = ['email' => 'Ya existe un proveedor con este email'];
+            return Inertia::render('Providers/Edit', ['provider' => $provider, 'errors' => $errors]);
+        }
+
+        $provider->update($newData);
+
+        return to_route('providers.index');
     }
 
     /**

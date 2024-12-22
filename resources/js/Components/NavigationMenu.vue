@@ -4,10 +4,10 @@ import { Link } from '@inertiajs/vue3';
 
 <template>
 	<v-list>
-		<Link href="/proveedores">
+		<Link href="/providers">
 			<v-list-item prepend-icon="mdi-store" title="Proveedores" link />
 		</Link>
-		<Link href="/compras">
+		<Link href="/purchases">
 			<v-list-item prepend-icon="mdi-basket" title="Compras" link />
 		</Link>
 		<Link href="/profile">

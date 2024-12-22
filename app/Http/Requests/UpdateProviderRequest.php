@@ -11,9 +11,9 @@ class UpdateProviderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
-
+    
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,7 +22,20 @@ class UpdateProviderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required',
+            'phone' => 'required',
+            'email' => ['required', 'email'],
+            // 'email' => ['required', 'email', 'unique:App\Models\Provider,email'],
+            'contact' => 'required'
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'required' => 'Este campo es obligatorio',
+            'email' => 'El e-mail no es válido s',
+            'email.unique' => 'Ya existe un proveedor con este email',
         ];
     }
 }

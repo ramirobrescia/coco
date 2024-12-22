@@ -24,7 +24,7 @@ function cancelar(){
 }
 
 function guardar(){
-	form.post('/proveedores', {
+	form.post('/providers', {
 		replace: false,
 		preserveState: true,
 		only: ['providers'],
