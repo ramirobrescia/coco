@@ -73,6 +73,7 @@ class ProviderController extends Controller
     {
         $newData = $request->validated();
 
+        // Validate if exist another provider with the current email
         $exist = Provider::where('email', $newData['email'])
                 ->where('id', '!=', $provider->id)
                 ->count() > 0;
