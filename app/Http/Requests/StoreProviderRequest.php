@@ -35,7 +35,7 @@ class StoreProviderRequest extends FormRequest
     {
         return [
             'required' => 'Este campo es obligatorio',
-            'email' => 'El e-mail no es válido s',
+            'email' => 'El e-mail no es válido',
             'email.unique' => 'Ya existe un proveedor con este email',
         ];
     }
