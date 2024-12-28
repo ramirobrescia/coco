@@ -6,6 +6,7 @@ use App\Models\Provider;
 use App\Http\Requests\StoreProviderRequest;
 use App\Http\Requests\UpdateProviderRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -23,9 +24,17 @@ class ProviderController extends Controller
                 $perPage = request()->integer('perPage', 10);
                 $sortBy = request()->input('sortBy', ['key' => 'name', 'order' => 'asc']);
 
-                return Provider::orderBy($sortBy['key'], $sortBy['order'])
+                return Provider::when(Request::input('search'), function($query, $search){
+                    $query->whereLike('name', "%{$search}%")
+                    ->orWhereLike('email', "%{$search}%");
+                    })
+                    ->orderBy($sortBy['key'], $sortBy['order'])
                     ->paginate($perPage)
                     ->withQueryString();
+                return $providers;
+            }),
+            'filters' => Inertia::lazy(function () {
+                return Request::only('search');
             })
         ]);
     }
