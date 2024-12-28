@@ -34,8 +34,8 @@ function cancelar(){
 // use `onSubmit` as an event handler for your forms
 const guardar = handleSubmit(values => {
 	router.post('/providers', values, {
-		onBefore: () => processing = true,
-		onFinish: () => processing = false,
+		onBefore: () => processing.value = true,
+		onFinish: () => processing.value = false,
 		onError: (serverErrors) => {
 			for (const [field, error] of Object.entries(serverErrors)) {
 				setFieldError(field, error)
